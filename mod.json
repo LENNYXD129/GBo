@@ -8,7 +8,7 @@
 	},
 	"id": "stereomod",
 	"name": "sepa",
-	"version": "5.4.1",
+	"version": "v1.0.0",
 	"developer": "lennyx",
 	"description": "xd",
 	"early-load":true,
