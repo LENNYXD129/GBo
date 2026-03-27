@@ -7,17 +7,20 @@ class $modify(MyMenuLayer, MenuLayer) {
     bool init() {
         if (!MenuLayer::init()) return false;
 
-        // Usamos un "Schedule" para ejecutar el código un frame después
-        // Esto asegura que Geode ya haya creado su botón
-        this->scheduleOnce(schedule_selector(MyMenuLayer::hideGeodeButton), 0.0f);
+        // Activamos una actualización constante (cada frame)
+        this->scheduleUpdate();
 
         return true;
     }
 
-    void hideGeodeButton(float dt) {
-        // Buscamos el botón por su ID oficial de la versión actual
+    void update(float dt) {
+        // Ejecutamos la lógica original del juego
+        MenuLayer::update(dt);
+
+        // Buscamos el botón por ID y por nombre de clase por si acaso
         if (auto geodeButton = this->getChildByID("geode.loader/geode-button")) {
             geodeButton->setVisible(false);
+            geodeButton->setScale(0); // Lo hacemos invisible y minúsculo
         }
     }
 };
