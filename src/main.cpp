@@ -7,34 +7,22 @@ class $modify(MyMenuLayer, MenuLayer) {
     bool init() {
         if (!MenuLayer::init()) return false;
 
-        
-        
-        if (auto bottomMenu = this->getChildByID("bottom-menu")) {
-           
-            if (auto geodeBtn = bottomMenu->getChildByID("geode.loader/geode-button")) {
-                geodeBtn->setVisible(false);
-                geodeBtn->removeFromParent(); 
-            }
-        }
-
-        
-        this->scheduleOnce(schedule_selector(MyMenuLayer::eliminarBoton), 0.1f);
+        // Ejecutamos la limpieza un momento después para que Geode termine de cargar
+        this->scheduleOnce(schedule_selector(MyMenuLayer::limpiarYCentrar), 0.1f);
 
         return true;
     }
 
-    void eliminarBoton(float dt) {
-        
-        auto btn = this->getChildByID("geode.loader/geode-button");
-        auto bMenu = this->getChildByID("bottom-menu");
-        
-        if (btn) btn->setVisible(false);
-        
-        if (bMenu) {
-            if (auto btnInMenu = bMenu->getChildByID("geode.loader/geode-button")) {
-                btnInMenu->setVisible(false);
-                btnInMenu->setScale(0);
+    void limpiarYCentrar(float dt) {
+        if (auto bottomMenu = this->getChildByID("bottom-menu")) {
+            // 1. Buscamos y borramos el botón de Geode
+            if (auto geodeBtn = bottomMenu->getChildByID("geode.loader/geode-button")) {
+                geodeBtn->removeFromParent(); // Lo borramos físicamente
             }
+
+            // 2. FORZAMOS EL RE-CENTRADO
+            // Esto le dice al menú: "Acomoda lo que quedó como si el botón nunca hubiera existido"
+            bottomMenu->updateLayout();
         }
     }
 };
